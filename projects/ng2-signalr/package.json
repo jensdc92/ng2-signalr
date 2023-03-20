@@ -1,23 +1,23 @@
 {
-  "name": "ng2-signalr",
-  "version": "12.0.0",
+  "name": "ngx-signalr-no-jquery",
+  "version": "14.0.0",
   "peerDependencies": {
-    "@angular/common": ">=11.0.0",
-    "@angular/core": ">=11.0.0"
+    "@angular/common": ">=14.0.0",
+    "@angular/core": ">=14.0.0"
   },
-  "author": "Hannes Neukermans",
+  "author": "jensdc92",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HNeukermans/ng2-signalR.git"
+    "url": "git+https://github.com/jensdc92/ng2-signalR.git"
   },
   "bugs": {
-    "url": "https://github.com/HNeukermans/ng2-signalr/issues"
+    "url": "https://github.com/jensdc92/ng2-signalr/issues"
   },
-  "homepage": "https://github.com/HNeukermans/ng2-signalR",
+  "homepage": "https://github.com/jensdc92/ng2-signalR",
   "keywords": [
     "signalR",
     "typescript",
-    "angular 12"
+    "angular 14"
   ],
   "license": "MIT",
   "dependencies": {

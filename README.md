@@ -1,36 +1,23 @@
-
-[![npm version](https://badge.fury.io/js/ng2-signalr.svg)](https://badge.fury.io/js/ng2-signalr)
-![live demo](https://img.shields.io/badge/demo-live-orange.svg)
-[![Coverage Status](https://coveralls.io/repos/github/HNeukermans/ng2-signalr/badge.svg?branch=master)](https://coveralls.io/github/HNeukermans/ng2-signalr?branch=master)
-[![Build Status](https://travis-ci.org/HNeukermans/ng2-signalr.svg?branch=master)](https://travis-ci.org/HNeukermans/ng2-signalr)
-# ng2-signalr
+# ngx-signalr-no-jquery
 An angular typescript library that allows you to connect to Asp.Net SignalR
 
 ## Features:
  1. 100% typescript
  2. use rxjs to observe server events 
  3. write unit tests easy using the provided SignalrConnectionMockManager & ActivatedRouteMock
+ 4. no jquery dependency
 
-## [ng2-signalr live demo](http://ng2-signalr-webui.azurewebsites.net)
-![ng2-signalr](https://cloud.githubusercontent.com/assets/2285199/22845870/f8cdaff4-efe4-11e6-905d-a471a998125a.gif)
-source: [ng2 signalr demo](https://github.com/HNeukermans/ng2-signalr.demo.webui.systemjs) <br>
-demo : [demo](http://ng2-signalr-webui.azurewebsites.net) (can take longer to load. Sorry, azure free tier :-))<br>
-ng cli example: [ng cli example](https://github.com/HNeukermans/ng2-signalr.demo.webui.ngcli) <br>
 ## Installation
 ```
-npm install ng2-signalr jquery signalr --save
+npm install ngx-signalr-no-jquery signalr-no-jquery signalr --save
 ```
-
-> v5 is first version developed against angular v5. 
-> angular v4 users should use v2.2.1.
 
 ## Setup
 inside app.module.ts
 ```ts
-import { SignalRModule } from 'ng2-signalr';
-import { SignalRConfiguration } from 'ng2-signalr';
+import { SignalRModule } from 'ngx-signalr-no-jquery';
+import { SignalRConfiguration } from 'ngx-signalr-no-jquery';
 
-// >= v2.0.0
 export function createConfig(): SignalRConfiguration {
   const c = new SignalRConfiguration();
   c.hubName = 'Ng2SignalRHub';
@@ -38,13 +25,11 @@ export function createConfig(): SignalRConfiguration {
   c.url = 'http://ng2-signalr-backend.azurewebsites.net/';
   c.logging = true;
   
-  // >= v5.0.0
   c.executeEventsInZone = true; // optional, default is true
   c.executeErrorsInZone = false; // optional, default is false
   c.executeStatusChangeInZone = true; // optional, default is true
   return c;
 }
-
 
 @NgModule({
   imports: [ 
@@ -52,7 +37,6 @@ export function createConfig(): SignalRConfiguration {
   ]
 })
 
-// v1.0.9
 const config = new SignalRConfiguration();
 config.hubName = 'Ng2SignalRHub';
 config.qs = { user: 'donald' };
@@ -69,7 +53,6 @@ config.url = 'http://ng2-signalr-backend.azurewebsites.net/';
 inside angular-cli.json
 ```ts
 "scripts": [
-          "../node_modules/jquery/dist/jquery.min.js",
           "../node_modules/signalr/jquery.signalR.js"
 ],
 ```
@@ -82,7 +65,7 @@ Setup involves 3 steps.
 ```ts
 // 1. if you want your component code to be testable, it is best to use a route resolver and make the connection there
 import { Resolve } from '@angular/router';
-import { SignalR, SignalRConnection } from 'ng2-signalr';
+import { SignalR, SignalRConnection } from 'ngx-signalr-no-jquery';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -144,7 +127,7 @@ WaitTime:
 More difficult to unit test:
  - If you want to write unit tests against the connection, you need to mock Signalr instance first. 
 
-### listen to connectionstatus changes during connect (>= v2.0.6)
+### listen to connectionstatus changes during connect
 From version 2.0.6 onwards you can subscribe to connectionstatus changes upon connecting to the server.
 Forst you ask signalr to create a connection. Then on the connection object you can subscribe to the status observable before calling 
 the start method.
@@ -187,8 +170,8 @@ Signalr.connect(); //HERE: module level configuration is used when trying to con
 #### 2. Connection level: 
 You can always configure signalr on a per connection level. For this, you need to invoke Singalr.connect(options) method, passing in an options parameter, of type ConnectionOptions. Behind the scenes, Signalr connect method will merge the provided options parameter, with the default (module) configuration, into a new configuration object, and pass that to signalr backend. 
 ```ts
-import { SignalRModule } from 'ng2-signalr';
-import { IConnectionOptions, SignalR } from 'ng2-signalr';
+import { SignalRModule } from 'ngx-signalr-no-jquery';
+import { IConnectionOptions, SignalR } from 'ngx-signalr-no-jquery';
 
 let options: IConnectionOptions = { hubName: 'MyHub' };
 Signalr.connect(options);
@@ -283,28 +266,6 @@ it('I want to simulate several ChatMessages received, in my unit test',
 ```
 For more info, certainly check out the live demo, unit testing section.
 
-## Breaking changes
-v2.0.6
-going from <2.0.6 to 2.0.6
-ConnectionStatus refactoring
-  1. removed ConnectionStatus.starting
-  2. removed ConnectionStatus.received
-  3. removed ConnectionStatus.connectionSlow
-  4. removed ConnectionStatus.reconnected
-  5. removed ConnectionStatus.stateChanged
-
-
-v2.0.0
-going from 1.0.X to 2.0.0 there will be some breaking changes. 
-
-type renames:
-  1. ConnectionOptions to IConnectionOptions
-  2. ListenerCollection to IListenerCollection 
-  3. SignalRConnectionBase to ISignalRConnection
-  
-configuration: <br>
-  4. SignalRModule.configure(c: SingalRConfiguration) to SignalR.forRoot(() => SingalRConfiguration);
-
 ## Detailed webpack install
 ```
 npm install jquery signalr expose-loader --save
@@ -320,8 +281,6 @@ import '../node_modules/signalr/jquery.signalR.js';
    'ng2-signalr' : 'node_modules/ng2-signalr/bundles/ng2-singalr.umd.(?min).js'
  }
 ```
-
->>>>>>> af93c8777fb64c74f74a875e5da60a168f410e06
 
 ## Issue Reporting
 
